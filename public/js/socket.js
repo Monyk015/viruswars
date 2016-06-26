@@ -11,6 +11,7 @@ redis.subscribe('lobby-channel');
 
 redis.on('message', function (channel, message)
 {
+    console.log(channel + ':' + message);
     message = JSON.parse(message);
     io.emit(channel + ':' + message.event,message.data);
 });

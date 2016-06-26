@@ -12,6 +12,10 @@
   "dependencies": {
     "ioredis": "^2.0.1",
     "socket.io": "^1.4.6",
-    "vue": "^1.0.25-csp"
+    "vue": "^1.0.25-csp",
+    "laravel-elixir": "latest",
+    "bootstrap-sass": "latest",
+    "elixir-typescript": "latest",
+    "bootstrap": "^3.3.6"
   }
 }

@@ -36,7 +36,7 @@
                         counts[index]['joined'] = 0;
                         lobby.players.forEach (function (player)
                         {
-                            if (player != null)
+                            if (player.name != null)
                                 counts[index]['joined']++;
                         });
                     });
