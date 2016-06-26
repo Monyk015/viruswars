@@ -7,7 +7,7 @@ var io = require('socket.io')(server);
 var Redis = require('ioredis');
 var redis = new Redis();
 
-redis.subscribe('test_channel');
+redis.subscribe('lobby-channel');
 
 redis.on('message', function (channel, message)
 {

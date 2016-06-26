@@ -18,3 +18,8 @@ Route::get('/', function () {
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
+
+//to view list of all lobbies or one u gotta be authed
+Route::resource('lobby','LobbyController');
+
+Route::get('/lobby/{lobbyId}/join/{slotId}','LobbyController@joinSlot')->middleware('auth')->name('joinSlot');
