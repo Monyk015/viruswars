@@ -1,63 +1,43 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <div class="container" id="container">
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
                     <div class="panel-heading">Lobby</div>
                     <div class="panel-body">
-                        <ul class="list-group" id="player-list">
+                        <ul class="list-group">
                             <li class="list-group-item" v-for="(index,player) in players">
-                                <div class="btn" v-if="player.name">
-                                    @{{player.name}}
+                                <div v-if="player.name">
+                                    <div class="btn">
+                                        @{{player.name}}
+                                    </div>
+                                    <div v-on:click="kickPlayer(index)" class="kick-player-button" v-if="user['id'] == creator['id'] && player['id'] != user['id']">
+                                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                    </div>
                                 </div>
                                 <div v-on:click="joinSlot(index)" class="btn btn-link" v-if="player.name == null">
                                     Join slot.
                                 </div>
                             </li>
                         </ul>
+                        <div class="leave-or-destroy-button btn btn-default" v-on:click="destroyLobby" v-if="user['id'] == creator['id']">Destroy lobby</div>
+                        <div class="leave-or-destroy-button btn btn-default" v-on:click="leaveLobby" v-else>Leave lobby</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <script>
-       var vm = new Vue ({
-                    el: '#player-list',
-                    data: {
-                        lobbyId: <?= json_encode($id) ?>,
-                        mode: <?= json_encode($mode) ?>,
-                        creator: <?= json_encode($creator) ?>,
-                        players: <?= json_encode($players) ?>
-                    },
-                    methods: {
-                        joinSlot: function (index)
-                        {
-                            $.get ('/lobby/' + vm.lobbyId + '/join/' + index, function (data)
-                            {
-                                if (data != 'True')
-                                    alert ('Error joining slot');
-                            });
-                        }
-                    },
-                    ready: function()  {
-                            let socket = io ('192.168.10.10:3000');
-                            socket.on ('lobby-channel:' + 'App\\Events\\UserJoinsSlot', function (data)
-                            {
-                                if (vm.lobbyId == data['lobbyId'])
-                                    vm.players.$set(data['slotId'],data['user']);
-                                //vm.players.reverse().reverse();
-                            });
-                            socket.on ('lobby-channel:' + 'App\\Events\\UserLeavesSlot', function (data)
-                            {
-                                if (vm.lobbyId == data['lobbyId'])
-                                    vm.players.$set(data['slotId'],{});//vm.$set('players', data['players']);
-                                //vm.players.reverse().reverse();
-                            });
-                        }
-                })
-                ;
+        let bag = {
+            lobbyId: <?= json_encode($id) ?>,
+            mode: <?= json_encode($mode) ?>,
+            creator: <?= json_encode($creator) ?>,
+            players: <?= json_encode($players) ?>,
+            user: <?= json_encode(Auth::user()) ?>
+        };
+
     </script>
     <script src="../js/lobby/show.js"></script>
 @endsection

@@ -23,3 +23,7 @@ Route::get('/home', 'HomeController@index');
 Route::resource('lobby','LobbyController');
 
 Route::get('/lobby/{lobbyId}/join/{slotId}','LobbyController@joinSlot')->middleware('auth')->name('joinSlot');
+
+Route::get('/lobby/{lobbyId}/kick/{slotId}', 'LobbyController@kickPlayer')->middleware('auth');
+
+Route::get('/lobby/{lobbyId}/leave/', 'LobbyController@leave')->middleware('auth');

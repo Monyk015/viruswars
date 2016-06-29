@@ -1,0 +1,13 @@
+.kick-player-button{
+    float:right;
+    margin: 8px;
+    font-size: 17px;
+}
+
+.kick-player-button:hover{
+    text-shadow: 0 0 5px #34598e;
+}
+
+.leave-or-destroy-button{
+    float: right;
+}
