@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\User;
 use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -15,7 +14,7 @@ class UserLeavesSlot extends Event implements ShouldBroadcast
     public $lobbyId;
     public $slotId;
 
-    public function __construct(User $user, $lobbyId, $slotId)
+    public function __construct(\App\User $user, $lobbyId, $slotId)
     {
         $this->user = $user;
         $this->lobbyId = $lobbyId;

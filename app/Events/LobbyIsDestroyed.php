@@ -6,18 +6,21 @@ use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class UserJoinsSlot extends Event implements ShouldBroadcast
+class LobbyIsDestroyed extends Event implements ShouldBroadcast
 {
     use SerializesModels;
+
     public $user;
     public $lobbyId;
-    public $slotId;
-
-    public function __construct(\App\User $user, $lobbyId, $slotId)
+    /**
+     * Create a new event instance.
+     *
+     * @return void
+     */
+    public function __construct(\App\User $user, $lobbyId)
     {
         $this->user = $user;
         $this->lobbyId = $lobbyId;
-        $this->slotId = $slotId;
     }
 
     /**

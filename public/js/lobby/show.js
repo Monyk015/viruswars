@@ -55,6 +55,9 @@ $(() =>
         ready: function()
         {
             let socket = io('192.168.10.10:3000');
+
+            //Broadcast event handlers below
+            //
             socket.on('lobby-channel:' + 'App\\Events\\UserJoinsSlot', function(data)
             {
                 if(vm.lobbyId == data['lobbyId'])
@@ -65,6 +68,13 @@ $(() =>
                 if(vm.lobbyId == data['lobbyId'])
                     vm.players.$set(data['slotId'], {});
             });
+            socket.on('lobby-channel:' + 'App\\Events\\LobbyIsDestroyed', function(data)
+            {
+                if(vm.lobbyId == data['lobbyId'])
+                    window.location.replace('/lobby');
+            });
+            //
+            //
             $.ajaxSetup({
                 'headers': {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

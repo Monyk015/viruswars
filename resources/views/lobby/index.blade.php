@@ -20,29 +20,9 @@
         </div>
     </div>
     <script>
-        var vm = new Vue ({
-            el: '#lobby-list',
-            data: {
-                lobbies: <?= $lobbies ?>
-            },
-            computed: {
-                countsOfPlayers: function ()
-                {
-                    var counts = new Array (this.lobbies.length);
-                    this.lobbies.forEach (function (lobby, index)
-                    {
-                        counts[index] = {};
-                        counts[index]['of'] = lobby.players.length;
-                        counts[index]['joined'] = 0;
-                        lobby.players.forEach (function (player)
-                        {
-                            if (player.name != null)
-                                counts[index]['joined']++;
-                        });
-                    });
-                    return counts;
-                }
-            }
-        });
+        let bag = {
+            lobbies: <?= $lobbies ?>
+        };
     </script>
+    <script src="../js/lobby/index.js"></script>
 @endsection

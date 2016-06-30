@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\LobbyIsCreated;
+use App\Events\LobbyIsDestroyed;
 use App\Events\UserJoinsSlot;
 use App\Events\UserLeavesSlot;
 use App\Lobby;
@@ -39,6 +41,7 @@ class LobbyController extends Controller
         $lobby->creator = $creator;
         $lobby->players[0] = $creator;
         Lobby::save($lobby);
+        event(new LobbyIsCreated($creator,$lobby));
         return redirect(route('lobby.show', ['lobby' => $lobby->id]));
     }
 
@@ -94,20 +97,24 @@ class LobbyController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
+        $user = $request->user();
+        event(new LobbyIsDestroyed($user, $id));
         return Lobby::delete($id);
     }
 
+    
     /**
-     * @param $lobbyId
-     * @param $slotId
-     * @param Request $request
-     * @return string
-     */
+ * @param $lobbyId
+ * @param $slotId
+ * @param Request $request
+ * @return string
+ */
 
     public function kickPlayer($lobbyId, $slotId, Request $request)
     {
@@ -119,6 +126,11 @@ class LobbyController extends Controller
         return 'True';
     }
 
+    /**
+     * @param $lobbyId
+     * @param Request $request
+     * @return string
+     */
     public function leave($lobbyId, Request $request)
     {
         $user = $request->user();
